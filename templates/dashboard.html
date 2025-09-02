@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Dashboard - Meeting Recorder</title>
+<style>
+  :root {
+  --bg-color: #121212;
+  --card-bg: #1e1e1e;
+  --primary-color: #4ade80; /* soft green */
+  --primary-hover: #22c55e;
+  --text-color: #e5e7eb;
+  --muted-text: #9ca3af;
+  --input-bg: #2a2a2a;
+  --input-border: #3f3f3f;
+  --error-color: #ef4444;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0; 
+  padding: 0;
+  font-family: 'Segoe UI', Tahoma, sans-serif;
+}
+
+body.bg {
+  background: var(--bg-color);
+  color: var(--text-color);
+  min-height: 100vh;
+  padding: 30px 15px;
+  display: flex;
+  justify-content: center;
+}
+
+.glass-card {
+  background: var(--card-bg);
+  border-radius: 12px;
+  max-width: 900px;
+  width: 100%;
+  padding: 30px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.4);
+}
+
+h1, h2 {
+  text-align: center;
+  font-weight: 600;
+  color: var(--primary-color);
+}
+
+h1 {
+  font-size: 2rem;
+  margin-bottom: 8px;
+}
+
+h2 {
+  font-size: 1.4rem;
+  margin: 25px 0 15px;
+}
+
+p.desc {
+  text-align: center;
+  font-size: 1rem;
+  margin-bottom: 25px;
+  color: var(--muted-text);
+}
+
+/* Flash messages */
+.flash {
+  max-width: 600px;
+  margin: 15px auto 30px;
+  padding: 12px 20px;
+  border-radius: 6px;
+  font-weight: 500;
+  text-align: center;
+  font-size: 0.95rem;
+}
+
+.flash-success {
+  background-color: rgba(34, 197, 94, 0.15);
+  color: var(--primary-color);
+  border: 1px solid var(--primary-color);
+}
+
+.flash-danger {
+  background-color: rgba(239, 68, 68, 0.15);
+  color: var(--error-color);
+  border: 1px solid var(--error-color);
+}
+
+/* Forms */
+form {
+  max-width: 480px;
+  margin: 0 auto 25px;
+}
+
+label {
+  display: block;
+  font-weight: 500;
+  margin-bottom: 6px;
+  font-size: 0.95rem;
+  color: var(--text-color);
+}
+
+input[type="text"],
+input[type="datetime-local"],
+input[type="url"] {
+  width: 100%;
+  padding: 10px 12px;
+  margin-bottom: 18px;
+  border-radius: 6px;
+  border: 1px solid var(--input-border);
+  font-size: 0.95rem;
+  background: var(--input-bg);
+  color: var(--text-color);
+  outline: none;
+  transition: border-color 0.2s ease;
+}
+
+input:focus {
+  border-color: var(--primary-color);
+}
+
+/* Buttons */
+button {
+  width: 100%;
+  padding: 10px;
+  font-size: 1rem;
+  font-weight: 500;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  background: var(--primary-color);
+  color: #111;
+  transition: background-color 0.25s ease;
+}
+
+button:hover {
+  background-color: var(--primary-hover);
+}
+
+/* Different button styles */
+.btn-join {
+  background: #3b82f6;
+  color: #fff;
+}
+
+.btn-join:hover {
+  background: #2563eb;
+}
+
+.btn-stop {
+  background: var(--error-color);
+  color: #fff;
+}
+
+.btn-stop:hover {
+  background: #dc2626;
+}
+
+/* Links */
+.meet-link {
+  max-width: 480px;
+  margin: 8px auto 25px;
+  text-align: center;
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: var(--primary-color);
+  word-break: break-word;
+}
+
+.meet-link a {
+  color: var(--primary-color);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+}
+
+.meet-link a:hover {
+  border-bottom: 1px solid var(--primary-color);
+}
+
+/* Transcript & bullets */
+pre {
+  max-width: 700px;
+  margin: 0 auto 20px;
+  background: #181818;
+  border-radius: 8px;
+  padding: 16px;
+  font-size: 0.9rem;
+  line-height: 1.4;
+  overflow-y: auto;
+  max-height: 250px;
+  white-space: pre-wrap;
+  color: var(--text-color);
+}
+
+ul {
+  max-width: 700px;
+  margin: 0 auto 25px;
+  padding-left: 20px;
+  font-size: 0.95rem;
+  color: var(--text-color);
+}
+
+ul li {
+  margin-bottom: 6px;
+  line-height: 1.4;
+}
+
+/* Logout button */
+.btn.logout {
+  display: block;
+  width: 140px;
+  margin: 30px auto 0;
+  padding: 10px 0;
+  font-weight: 500;
+  font-size: 0.95rem;
+  border-radius: 6px;
+  text-align: center;
+  color: #fff;
+  background: var(--error-color);
+}
+
+.btn.logout:hover {
+  background: #dc2626;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  .glass-card {
+    padding: 20px;
+  }
+}
+
+</style>
+<script>
+  function openMeeting(url) {
+    window.open(url, "_blank");
+  }
+</script>
+</head>
+<body class="bg">
+  <div class="glass-card">
+    <h1>Welcome, {{ user }}</h1>
+    <p class="desc">This is your meeting recorder dashboard.</p>
+
+    <!-- Flash messages -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, message in messages %}
+          <div class="flash flash-{{ category }}">{{ message }}</div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+
+    <!-- Create Google Meet Form -->
+    <h2>Create Google Meet</h2>
+    <form method="post" action="{{ url_for('create_meeting') }}">
+      <label for="meeting_title">Meeting Title:</label>
+      <input type="text" id="meeting_title" name="meeting_title" placeholder="Enter meeting title" required />
+
+      <label for="start_datetime">Start Date & Time:</label>
+      <input type="datetime-local" id="start_datetime" name="start_datetime" required />
+
+      <label for="end_datetime">End Date & Time:</label>
+      <input type="datetime-local" id="end_datetime" name="end_datetime" required />
+
+      <button type="submit">Create Google Meet</button>
+    </form>
+
+    {% if meet_link %}
+      <div class="meet-link">
+        Google Meet created! <a href="{{ meet_link }}" target="_blank" rel="noopener">{{ meet_link }}</a>
+      </div>
+    {% endif %}
+
+    <!-- Join Meeting & Start Recording Form -->
+    <form method="post" onsubmit="openMeeting(this.meet_link.value)">
+      <input type="hidden" name="action" value="join" />
+      <input type="url" name="meet_link" placeholder="https://meet.google.com/..." required value="{{ meet_link or '' }}" />
+      <button type="submit" class="btn-join">Join Meeting & Start Recording</button>
+    </form>
+
+    <!-- Stop Recording Form -->
+    <form method="post">
+      <input type="hidden" name="action" value="stop" />
+      <button type="submit" class="btn-stop">⏹ Stop Recording</button>
+    </form>
+
+    <!-- Transcript & Bullet Points -->
+    {% if transcript %}
+      <h2>Transcript</h2>
+      <pre>{{ transcript }}</pre>
+
+      <h2>Bullet Points</h2>
+      <ul>
+        {% for point in bullet_points %}
+          <li>{{ point }}</li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+
+    <!-- PDF Download and Email -->
+    {% if pdf_file %}
+      <p style="text-align:center; margin-bottom: 15px;">
+        <a href="{{ url_for('static', filename=pdf_file) }}" download style="color: var(--primary-color); font-weight: 700; text-decoration:none; text-shadow: 0 0 6px var(--primary-color);">
+          📄 Download PDF Summary
+        </a>
+      </p>
+
+      <form class="email-send-form" method="post" action="{{ url_for('send_email') }}">
+        <input type="hidden" name="pdf_file" value="{{ pdf_file }}" />
+        <button type="submit">📧 Send Summary via Email</button>
+      </form>
+    {% endif %}
+
+
+    <!-- Logout -->
+     <a href="{{ url_for('logout') }}" class="btn logout">Logout</a>
+
+
+</body>
+</html>

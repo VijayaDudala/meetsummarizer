@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Meeting Recorder - Home</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body class="bg">
+  <div class="glass-card">
+    <h1>Welcome to Meeting Recorder</h1>
+    <p>Record, transcribe, and summarize your meetings easily.</p>
+    <a href="{{ url_for('register') }}" class="btn">Register</a>
+    <a href="{{ url_for('login') }}" class="btn">Login</a>
+  </div>
+</body>
+</html>
